@@ -28,7 +28,7 @@ client.connect(err => {
 
   app.post('/addProduct', (req, res)=> {
     const productInfo = req.body;
-    console.log(productInfo)
+ 
     collection.insertOne(productInfo)
     
     .then(ressult =>{
@@ -45,6 +45,21 @@ client.connect(err => {
       })
   })
 
+  app.patch('/update/:id',(req, res)=>{
+    console.log(req.body)
+    collection.updateOne(
+      {_id:ObjectId(req.body.id)}
+      ,
+      {$set:{
+        price: req.body.price,
+        quantity: req.body.quantity
+      }}
+      )
+      .then(result=>{
+        console.log(result)
+      })
+    
+  })
 
 
   app.delete('/delete/:id', (req,res) => {

@@ -52,8 +52,24 @@
                 <h3> Name: ${data.name}</h3>
                Price: <input placeholder="price" id="price" value="${data.price}"><br>
               Quantity: <input placeholder="quantity" id="quantity" value="${data.quantity}"><br>
-              <br><input type="submit" value="submit" id="submit">
+              <br><button onclick="updateData('${data._id}')" type="submit"  id="submit">submit</button>
                 `
+            })
+        }
+
+        function updateData(id){
+            const price = document.getElementById('price').value;
+            const quantity = document.getElementById('quantity').value;
+            const product = {id, price, quantity};
+           
+            fetch(`/update/${id}`,{
+                method: 'PATCH',
+                headers: { 'Content-type': 'application/json'},
+                body: JSON.stringify(product)
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log("updated")
             })
         }
 
