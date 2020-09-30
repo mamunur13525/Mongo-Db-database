@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <h1>Mom i have a mongodb!!</h1>
+
+
+    <form action="/addProduct" method="POST">
+        <input type="text" name="name" placeholder="name">
+        <input type="text" name="price" placeholder="price">
+        <input type="text" name="quantity" placeholder="quantity">
+        <button type="submit">Add Product</button>
+    </form>
+    <div id="container">
+
+    </div>
+    <div id="product">
+
+    </div>
+    <script>
+    
+        fetch('/product')
+        .then(res => res.json())
+        .then(products =>{
+            const target = document.getElementById('container');
+           products.forEach(pd => {
+             
+               const p = document.createElement('p');
+               p.innerHTML = `${pd.name}-- Price:${pd.price}-- Quantity: ${pd.quantity} 
+               <button onclick="loadProduct('${pd._id}')">Update</button>
+               <button  onclick="deletBtn('${pd._id}')">Delete</button>
+               
+               `;
+               target.appendChild(p);
+           });
+           
+        })
+
+
+        function loadProduct(id){
+            fetch(`/product/${id}`)
+            .then(res => res.json())
+            .then(data => {
+                const product = document.getElementById('product');
+                product.innerHTML = 
+                `
+                <h3> Name: ${data.name}</h3>
+               Price: <input placeholder="price" id="price" value="${data.price}"><br>
+              Quantity: <input placeholder="quantity" id="quantity" value="${data.quantity}"><br>
+              <br><input type="submit" value="submit" id="submit">
+                `
+            })
+        }
+
+        function deletBtn(id){
+            
+            fetch(`/delete/${id}`,{
+                method: "DELETE",
+            })
+            .then(res => res.json())
+            .then(result =>{
+                console.log('delet hoya')
+            })
+            
+        }
+   
+    </script>
+</body>
+</html>
