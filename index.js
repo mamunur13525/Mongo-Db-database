@@ -32,13 +32,12 @@ client.connect(err => {
     collection.insertOne(productInfo)
     
     .then(ressult =>{
-       console.log('product add');
-      res.send()
+      res.redirect('/')
     })
   })
 
   app.get('/product/:id', (req, res)=>{
-    console.log(req.params.id)
+ 
       collection.find({_id:ObjectId(req.params.id)})
       .toArray((error, documents) =>{
         res.send(documents[0])
@@ -46,7 +45,7 @@ client.connect(err => {
   })
 
   app.patch('/update/:id',(req, res)=>{
-    console.log(req.body)
+  
     collection.updateOne(
       {_id:ObjectId(req.body.id)}
       ,
@@ -56,7 +55,7 @@ client.connect(err => {
       }}
       )
       .then(result=>{
-        console.log(result)
+        res.send(result.modifiedCount> 0)
       })
     
   })
@@ -67,7 +66,7 @@ client.connect(err => {
       _id:ObjectId(req.params.id)
     })
     .then(result =>{
-      console.log(`delet ${req.params.name}`)
+      res.send(result.deletedCount > 0)
     })
     
   
